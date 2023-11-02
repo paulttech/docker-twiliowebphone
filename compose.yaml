@@ -7,12 +7,19 @@
 # You can add other services your application may depend on here, such as a
 # database or a cache. For examples, see the Awesome Compose repository:
 # https://github.com/docker/awesome-compose
+version: "3"
 services:
-  server:
-    build:
-      context: .
-    ports:
-      - 5000:5000
+  web:
+    build: .
+    entrypoint:
+      - flask
+      - run
+      - --host=0.0.0.0
+    environment:
+      FLASK_DEBUG: 1
+      FLASK_APP: ./app.py
+    ports: ['5000:5000']
+    volumes: ['./:/app']
 
 # The commented out section below is an example of how to define a PostgreSQL
 # database that your application can use. `depends_on` tells Docker Compose to
