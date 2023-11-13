@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @font-face {
+            font-family: 'Clash Display Variable';
+            src: url('/static/fonts/ClashDisplayVariable-Regular.ttf') format('truetype');
+            /* font-weight: normal; */
+            font-style: normal;
+        }
+        body {
+            font-family: 'Clash Display Variable', sans-serif;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            background: #141527;
+        }
+    </style>
+</head>
+<body>
+    <div class="modal" id="modal-dial" style="display: flex; flex-direction: column;">
+        <div class="modal-content" style="justify-content: center; margin: 0 auto; align-items: center; text-align: center;">
+            <!-- Add Contact -->
+            <div>
+                <span style="color:#0085FF; font-weight: 500; vertical-align: middle;">Add Contact</span>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
+                    <path d="M9.82361 0.632324C7.34843 0.662187 4.98305 1.65872 3.2327 3.40906C1.48236 5.15941 0.485825 7.52479 0.455963 9.99997C0.485825 12.4752 1.48236 14.8405 3.2327 16.5909C4.98305 18.3412 7.34843 19.3378 9.82361 19.3676C12.2988 19.3378 14.6642 18.3412 16.4145 16.5909C18.1649 14.8405 19.1614 12.4752 19.1913 9.99997C19.1614 7.52479 18.1649 5.15941 16.4145 3.40906C14.6642 1.65872 12.2988 0.662187 9.82361 0.632324ZM15.1766 10.6691H10.4927V15.3529H9.15449V10.6691H4.47067V9.33085H9.15449V4.64703H10.4927V9.33085H15.1766V10.6691Z" fill="#0085FF"/>
+                </svg>
+            </div>
+            <!--  -->
+                        
+            <!-- Number Input Box -->
+            <div>
+                <input id="phoneNumber" type="tel" placeholder="Enter Number Here" style="vertical-align: middle;"></input>
+            </div>
+            <!--  -->
+
+            <!-- Dial Pad -->
+            <div class="btn-group-vertical my-0" role="group" aria-label="Basic example">
+                <!-- Dial Pad Row 1 -->
+                <div class="btn-group btn-group-lg">
+                    <button type="button"
+                        class="btn btn-outline-secondary border-bottom-0 rounded-0 btnNumber">1</button>
+                    <button type="button" class="btn btn-outline-secondary border-bottom-0 btnNumber">2</button>
+                    <button type="button"
+                        class="btn btn-outline-secondary border-bottom-0 rounded-0 btnNumber">3</button>
+                </div>
+                <!--  -->
+                <!-- Dial Pad Row 2 -->
+                <div class="btn-group btn-group-lg">
+                    <button type="button"
+                        class="btn btn-outline-secondary border-bottom-0 rounded-0 btnNumber">4</button>
+                    <button type="button" class="btn btn-outline-secondary border-bottom-0 btnNumber">5</button>
+                    <button type="button"
+                        class="btn btn-outline-secondary border-bottom-0 rounded-0 btnNumber">6</button>
+                </div>
+                <!--  -->
+                <!-- Dial Pad Row 3 -->
+                <div class="btn-group btn-group-lg">
+                    <button type="button"
+                        class="btn btn-outline-secondary border-bottom-0 rounded-0 btnNumber">7</button>
+                    <button type="button" class="btn btn-outline-secondary border-bottom-0 btnNumber">8</button>
+                    <button type="button"
+                        class="btn btn-outline-secondary border-bottom-0 rounded-0 btnNumber">9</button>
+                </div>
+                <!--  -->
+            </div>
+            <!--  -->
+        </div>
+    </div>
+</body>
+</html>
+
