@@ -10,12 +10,26 @@
             /* font-weight: normal; */
             font-style: normal;
         }
+        @font-face {
+            font-family: 'Inter';
+            src: url('/static/fonts/Inter-Variable.ttf') format('truetype');
+            font-style: normal;
+        }
         body {
-            font-family: 'Clash Display Variable', sans-serif;
+            font-family: 'Clash Display Variable', 'Inter', sans-serif;
             width: 100%;
             height: 100%;
             margin: 0;
             background: #141527;
+        }
+        .btn-group-vertical .btn-group-lg button {
+        background-color: transparent;
+        border: none;
+        outline: none;
+        padding: 0; /* Remove padding to make the text centered */
+        font-size: inherit;
+        color: #FFFFFF; /* Text color */
+        cursor: pointer;
         }
     </style>
 </head>
@@ -33,7 +47,7 @@
                         
             <!-- Number Input Box -->
             <div>
-                <input id="phoneNumber" type="tel" placeholder="Enter Number Here" style="vertical-align: middle;"></input>
+                <input id="phoneNumber" type="tel" placeholder="Enter Number Here" style="vertical-align: middle; color: #FFFFFF; background-color: transparent; border: none; outline: none; text-align: center; font-weight: 500; font-family: 'Inter', sans-serif;"></input>
             </div>
             <!--  -->
 
@@ -41,31 +55,45 @@
             <div class="btn-group-vertical my-0" role="group" aria-label="Basic example">
                 <!-- Dial Pad Row 1 -->
                 <div class="btn-group btn-group-lg">
-                    <button type="button"
-                        class="btn btn-outline-secondary border-bottom-0 rounded-0 btnNumber">1</button>
-                    <button type="button" class="btn btn-outline-secondary border-bottom-0 btnNumber">2</button>
-                    <button type="button"
-                        class="btn btn-outline-secondary border-bottom-0 rounded-0 btnNumber">3</button>
+                    <button type="button" class="btnNumber">1</button>
+                    <button type="button" class="btnNumber">2</button>
+                    <button type="button" class="btnNumber">3</button>
                 </div>
-                <!--  -->
                 <!-- Dial Pad Row 2 -->
                 <div class="btn-group btn-group-lg">
-                    <button type="button"
-                        class="btn btn-outline-secondary border-bottom-0 rounded-0 btnNumber">4</button>
-                    <button type="button" class="btn btn-outline-secondary border-bottom-0 btnNumber">5</button>
-                    <button type="button"
-                        class="btn btn-outline-secondary border-bottom-0 rounded-0 btnNumber">6</button>
+                    <button type="button" class="btnNumber">4</button>
+                    <button type="button" class="btnNumber">5</button>
+                    <button type="button" class="btnNumber">6</button>
                 </div>
-                <!--  -->
                 <!-- Dial Pad Row 3 -->
                 <div class="btn-group btn-group-lg">
-                    <button type="button"
-                        class="btn btn-outline-secondary border-bottom-0 rounded-0 btnNumber">7</button>
-                    <button type="button" class="btn btn-outline-secondary border-bottom-0 btnNumber">8</button>
-                    <button type="button"
-                        class="btn btn-outline-secondary border-bottom-0 rounded-0 btnNumber">9</button>
+                    <button type="button" class="btnNumber">7</button>
+                    <button type="button" class="btnNumber">8</button>
+                    <button type="button" class="btnNumber">9</button>
                 </div>
-                <!--  -->
+            </div>
+            <!--  -->
+
+            <!-- Call Button / Clear Button -->
+            <div>
+                <button type="button" id="btnDial" style="background-color: transparent; border: none; outline: none; vertical-align: middle;">
+                    <svg width="57" height="57" viewBox="0 0 57 57" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="28.5" cy="28.5" r="28.5" fill="#03CB2F"/>
+                        <g clip-path="url(#clip0_7009_15436)">
+                        <path d="M42.0458 33.8517C40.0983 33.8517 38.2141 33.535 36.4566 32.965C35.9024 32.775 35.2849 32.9175 34.8574 33.345L32.3716 36.4642C27.8908 34.3267 23.6949 30.2892 21.4624 25.65L24.5499 23.0217C24.9774 22.5783 25.1041 21.9608 24.9299 21.4067C24.3441 19.6492 24.0433 17.765 24.0433 15.8175C24.0433 14.9625 23.3308 14.25 22.4758 14.25H16.9974C16.1424 14.25 15.1133 14.63 15.1133 15.8175C15.1133 30.5267 27.3524 42.75 42.0458 42.75C43.1699 42.75 43.6133 41.7525 43.6133 40.8817V35.4192C43.6133 34.5642 42.9008 33.8517 42.0458 33.8517Z" fill="white"/>
+                        </g>
+                        <defs>
+                        <clipPath id="clip0_7009_15436">
+                        <rect width="38" height="38" fill="white" transform="translate(10.3633 9.5)"/>
+                        </clipPath>
+                        </defs>
+                    </svg>      
+                </button>
+                <svg width="40" height="26" viewBox="0 0 40 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
+                    <rect x="12.1056" width="27.8946" height="25.3282" rx="3.01563" fill="#D9D9D9"/>
+                    <path d="M13.3184 0.759518C14.648 -0.302232 16.3105 0.923409 16.3373 2.98513L16.5856 22.0711C16.6129 24.1672 14.9345 25.5509 13.5778 24.5507L1.02123 15.2937C-0.33545 14.2935 -0.341643 11.6679 1.01013 10.5884L13.3184 0.759518Z" fill="#D9D9D9"/>
+                    <path d="M28.9176 7.41346C28.6236 7.06108 28.1486 7.06108 27.8546 7.41346L24.168 11.8227L20.4814 7.40442C20.1873 7.05204 19.7124 7.05204 19.4184 7.40442C19.1243 7.7568 19.1243 8.32604 19.4184 8.67842L23.105 13.0967L19.4184 17.5151C19.1243 17.8674 19.1243 18.4367 19.4184 18.7891C19.7124 19.1414 20.1873 19.1414 20.4814 18.7891L24.168 14.3707L27.8546 18.7891C28.1486 19.1414 28.6236 19.1414 28.9176 18.7891C29.2116 18.4367 29.2116 17.8674 28.9176 17.5151L25.231 13.0967L28.9176 8.67842C29.2041 8.33507 29.2041 7.7568 28.9176 7.41346Z" fill="#0B0B0B"/>
+                </svg>                        
             </div>
             <!--  -->
         </div>
