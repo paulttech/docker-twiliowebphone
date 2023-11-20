@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Allow microphone access for iframe -->
+    <!-- <meta http-equiv="Access-Control-Allow-Origin" content="https:////"> -->
+    <meta http-equiv="Access-Control-Allow-Origin" content="https://e85a-2405-201-f002-1128-44ea-d560-d6a7-d2fc.ngrok-free.app/">
+
+    <style>
+        .blinded {
+            display: none;
+        }
+    </style>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.min.js"></script>
+    
+
+    {% load static %}
+
+</head>
+<body>
+    <!-- this is part of webphone -->
+    <!-- iframe with webphone -->
+    <div id="iframe-container" class="blinded" style="position: fixed; z-index: 9; align-items: center; justify-content: center; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: 30px;">
+        <div id="iframe-container-header" style="padding: 20px; z-index: 10; background-color: #0F0F1A; display: flex; justify-content: space-between; text-align: center; align-items: center; border-top-left-radius: 30px; border-top-right-radius: 30px;">
+            <div>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14.93 16C13.2447 16 11.5167 15.578 9.746 14.734C7.97533 13.8893 6.33067 12.7043 4.812 11.179C3.292 9.653 2.11 8.008 1.266 6.244C0.422 4.48 0 2.75533 0 1.07C0 0.764667 0.1 0.510333 0.3 0.307C0.5 0.102334 0.75 0 1.05 0H3.523C3.795 0 4.03233 0.0856666 4.235 0.257C4.43767 0.428333 4.57467 0.647667 4.646 0.915L5.142 3.3C5.18867 3.58 5.18033 3.82433 5.117 4.033C5.05433 4.24167 4.94367 4.41267 4.785 4.546L2.59 6.592C3.00067 7.33733 3.45433 8.02933 3.951 8.668C4.44767 9.30733 4.97767 9.913 5.541 10.485C6.121 11.065 6.74567 11.605 7.415 12.105C8.08433 12.6043 8.819 13.0757 9.619 13.519L11.758 11.342C11.9207 11.1667 12.1037 11.051 12.307 10.995C12.5103 10.9397 12.735 10.9287 12.981 10.962L15.085 11.392C15.3563 11.4587 15.5767 11.5953 15.746 11.802C15.9153 12.0093 16 12.247 16 12.515V14.95C16 15.25 15.898 15.5 15.694 15.7C15.4907 15.9 15.2353 16 14.93 16ZM2.122 5.654L4.042 3.888C4.106 3.83733 4.14733 3.767 4.166 3.677C4.186 3.587 4.18267 3.50367 4.156 3.427L3.713 1.307C3.687 1.205 3.642 1.12833 3.578 1.077C3.514 1.02567 3.43033 1 3.327 1H1.275C1.19833 1 1.13433 1.02567 1.083 1.077C1.03167 1.12833 1.006 1.19233 1.006 1.269C1.02533 1.95233 1.132 2.66567 1.326 3.409C1.52133 4.153 1.78633 4.90133 2.121 5.654H2.122ZM10.572 13.988C11.248 14.3227 11.968 14.5703 12.732 14.731C13.4973 14.891 14.164 14.9767 14.732 14.988C14.8087 14.988 14.8727 14.9627 14.924 14.912C14.9753 14.8607 15.001 14.7963 15.001 14.719V12.712C15.001 12.6093 14.9753 12.526 14.924 12.462C14.8727 12.3973 14.796 12.3523 14.694 12.327L12.844 11.948C12.7667 11.9227 12.699 11.9193 12.641 11.938C12.5837 11.958 12.523 11.9997 12.459 12.063L10.572 13.988Z" fill="#00A54F"/>
+                </svg>                    
+                <span style="font-size: x-large; margin-left: 10px;">Webphone</span>
+                <div id="testdiv-socket" style="background: red;">working</div>
+                <button onclick="sendFlagToDjango()">Send flag to Django</button>
+                <script>
+                    function sendFlagToDjango() {
+                        const flag = 'Flag from Flask to Django';
+                        socket.emit('send_flag_to_django', { 'flask_flag': flag });
+                    }
+                </script>          
+                <button id="check-for-flag">Flag received</button>
+                <p>{{ flaskFlag }}</p>
+            </div>
+            <span style="margin-right: 10px; cursor: pointer; font-size: x-large;" id="movable-container-div-minimize">x</span>            
+        </div>
+        <div style="width: 60rem; height: 2px; background-color: #4F516D;"></div> <!-- Line with background color -->
+        
+        <!-- <iframe src="https:////" frameborder="0" allow="camera *;microphone *" style=" width: 60rem; height: 45rem"></iframe> -->
+        <iframe src="https://e85a-2405-201-f002-1128-44ea-d560-d6a7-d2fc.ngrok-free.app/" frameborder="0" allow="camera *;microphone *" style=" width: 60rem; height: 45rem; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px;"></iframe>
+    </div>
+
+    <!-- this is part of webphone -->
+    <!-- draggable container -->
+    <div id="draggable-container" style="position: absolute; z-index: 9; background-color: transparent; text-align: center; cursor: move;">
+        <div id="webphone-duration-container" style="width: 250px; height: 400px; background-color: transparent; position: relative; overflow: hidden;">
+            <!-- "width: 250px; height: 400px; -->
+            <!-- webphone lady background color -->
+            <!-- width: 250px; height: 317px; -->
+            <img src="{% static 'images/webphone/webphonelady.png' %}" alt="" style="width: 100%; height: 100%; object-fit: contain; position: absolute; top: 0; left: 0;">
+            
+            <!-- phone number / name -->
+            <div style="position: absolute; color: #FFF; top: 30%; left: 50%;transform: translateX(-50%);">
+                <span>Oshin Akhilraj</span>
+            </div>
+        
+            <!-- duration -->
+            <div style="position: absolute; color: #6B6B6B; top: 35%; left: 50%;transform: translateX(-50%);">
+                <span id="call-duration-text" class="blinded">Call duration</span>
+                <span id="time-field-webphone">00:00</span>
+            </div>
+        
+            <!-- open notes -->
+        
+        
+            <!-- endcall svg -->
+            <svg id="endcall-button" width="220" height="221" viewBox="0 0 250 251" fill="none" xmlns="http://www.w3.org/2000/svg" style="position: absolute; top: 60%; left: 50%; transform: translateX(-50%); cursor: pointer;">
+                <!-- bottom: 10%; -->
+                <g filter="url(#filter0_d_7049_11863)">
+                <rect x="89.2466" y="89.8984" width="64" height="64" rx="32" fill="url(#paint0_linear_7049_11863)" shape-rendering="crispEdges"/>
+                <path d="M106.682 120.624C108.354 119.004 110.473 117.761 113.041 116.896C115.61 116.032 118.38 115.627 121.353 115.68C124.328 115.733 127.082 116.228 129.614 117.167C132.147 118.105 134.224 119.41 135.844 121.082C136.137 121.385 136.283 121.733 136.28 122.127C136.278 122.523 136.129 122.865 135.831 123.153L133.378 125.53C133.108 125.792 132.79 125.935 132.424 125.96C132.059 125.985 131.712 125.899 131.384 125.702L128.6 123.813C128.284 123.58 128.058 123.33 127.92 123.062C127.781 122.795 127.727 122.519 127.756 122.234L127.967 118.094C126.843 117.75 125.727 117.499 124.621 117.343C123.514 117.186 122.406 117.095 121.297 117.069C120.164 117.051 119.025 117.116 117.881 117.264C116.737 117.412 115.555 117.65 114.335 117.98L114.306 122.195C114.313 122.526 114.243 122.816 114.095 123.067C113.946 123.318 113.734 123.545 113.458 123.748L110.958 125.344C110.624 125.539 110.274 125.615 109.908 125.573C109.541 125.53 109.228 125.375 108.97 125.11L106.63 122.694C106.341 122.396 106.202 122.05 106.212 121.656C106.222 121.262 106.379 120.917 106.682 120.624ZM129.332 118.575L129.126 122.172C129.111 122.284 129.137 122.394 129.205 122.501C129.272 122.609 129.355 122.689 129.456 122.739L131.933 124.416C132.057 124.492 132.175 124.525 132.288 124.515C132.401 124.504 132.508 124.449 132.611 124.35L134.647 122.377C134.723 122.304 134.761 122.217 134.763 122.116C134.765 122.016 134.728 121.928 134.655 121.852C133.979 121.193 133.187 120.587 132.28 120.037C131.371 119.486 130.389 118.999 129.333 118.574L129.332 118.575ZM112.939 118.43C111.947 118.748 110.994 119.195 110.082 119.77C109.169 120.347 108.425 120.903 107.851 121.437C107.775 121.511 107.736 121.598 107.734 121.697C107.732 121.798 107.768 121.886 107.843 121.963L109.772 123.954C109.871 124.056 109.976 124.114 110.089 124.128C110.202 124.143 110.321 124.114 110.447 124.041L112.646 122.638C112.747 122.589 112.818 122.527 112.857 122.453C112.895 122.378 112.915 122.278 112.918 122.154L112.939 118.43Z" fill="white"/>
+                </g>
+                <defs>
+                <filter id="filter0_d_7049_11863" x="0.203103" y="0.854959" width="249.507" height="249.507" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+                <feOffset dx="3.71014" dy="3.71014"/>
+                <feGaussianBlur stdDeviation="46.3768"/>
+                <feComposite in2="hardAlpha" operator="out"/>
+                <feColorMatrix type="matrix" values="0 0 0 0 0.945098 0 0 0 0 0.247059 0 0 0 0 0.0980392 0 0 0 0.5 0"/>
+                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_7049_11863"/>
+                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_7049_11863" result="shape"/>
+                </filter>
+                <linearGradient id="paint0_linear_7049_11863" x1="121.247" y1="89.8984" x2="121.247" y2="153.898" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#F13F19"/>
+                <stop offset="1" stop-color="#B93C22"/>
+                </linearGradient>
+                </defs>
+            </svg>
+        
+            <!-- close button -->
+            <div id="close-button-call-duration" style="position: absolute; top: 9%; right: 18%; color: #6B6B6B;" class="blinded">
+                <span style="cursor: pointer; font-size: large;">x</span>            
+            </div>
+        </div>
+    </div>
+
+    <!-- this is part of webphone -->
+    <!-- phone icon at the bottom of the screen -->
+    <div id="webphone-ui-icon" style="position: fixed; top: 96%; left: 98%; transform: translate(-50%, -50%); cursor: pointer;">
+        <svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g filter="url(#filter0_d_6985_39973)">
+            <circle cx="60" cy="60" r="39" fill="#03CB2F"/>
+            </g>
+            <path d="M78.537 67.3233C75.872 67.3233 73.2937 66.89 70.8887 66.11C70.1303 65.85 69.2853 66.045 68.7003 66.63L65.2987 70.8983C59.167 67.9733 53.4253 62.4483 50.3703 56.1L54.5953 52.5033C55.1803 51.8967 55.3537 51.0517 55.1153 50.2933C54.3137 47.8883 53.902 45.31 53.902 42.645C53.902 41.475 52.927 40.5 51.757 40.5H44.2603C43.0903 40.5 41.682 41.02 41.682 42.645C41.682 62.7733 58.4303 79.5 78.537 79.5C80.0753 79.5 80.682 78.135 80.682 76.9433V69.4683C80.682 68.2983 79.707 67.3233 78.537 67.3233Z" fill="white"/>
+            <defs>
+            <filter id="filter0_d_6985_39973" x="0" y="0" width="128" height="128" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+            <feOffset dx="4" dy="4"/>
+            <feGaussianBlur stdDeviation="12.5"/>
+            <feComposite in2="hardAlpha" operator="out"/>
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0"/>
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_6985_39973"/>
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_6985_39973" result="shape"/>
+            </filter>
+            </defs>
+        </svg>
+    </div>
+
+    <!-- this is part of webphone -->
+    <!-- Make the small container draggable -->
+    <script>
+        //Make the DIV element draggagle:
+        dragElement(document.getElementById("draggable-container"));
+        
+        function dragElement(elmnt) {
+        var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+        if (document.getElementById(elmnt.id)) {
+            /* if present, the header is where you move the DIV from:*/
+            document.getElementById(elmnt.id).onmousedown = dragMouseDown;
+        } else {
+            /* otherwise, move the DIV from anywhere inside the DIV:*/
+            elmnt.onmousedown = dragMouseDown;
+        }
+        
+        function dragMouseDown(e) {
+            e = e || window.event;
+            e.preventDefault();
+            // get the mouse cursor position at startup:
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            // call a function whenever the cursor moves:
+            document.onmousemove = elementDrag;
+        }
+        
+        function elementDrag(e) {
+            e = e || window.event;
+            e.preventDefault();
+            // calculate the new cursor position:
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            // set the element's new position:
+            elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+            elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+        }
+        
+        function closeDragElement() {
+            /* stop moving when mouse button is released:*/
+            document.onmouseup = null;
+            document.onmousemove = null;
+        }
+        }
+    </script>
+
+    <!-- remove the class blinded class when we press the phone icon -->
+    <script>
+        const phoneIcon = document.getElementById("webphone-ui-icon");
+        const iframeContainer = document.getElementById("iframe-container");
+        const movableContainerDivMinimizer = document.getElementById("movable-container-div-minimize");
+
+        phoneIcon.addEventListener('click', () => {
+            iframeContainer.classList.remove("blinded");
+        })
+        movableContainerDivMinimizer.addEventListener('click', () => {
+            iframeContainer.classList.add("blinded");
+        })
+    </script>
+
+    <!-- Socket -->
+    <script>
+        const socket = io.connect('http://localhost:5000');  // Adjust the URL based on your Flask server
+        socket.on('connect', function () {
+            console.log('Connected to Flask Socket.IO');
+        });
+        socket.on('receive_flag_from_flask', function (data) {
+            // Handle the received flag in your Django frontend
+            console.log('Received flag in Django:', data.flask_flag);
+            // Perform DOM manipulation or trigger actions based on the received flag
+        });
+        // Handle the socket event from Flask
+        socket.on('call_made', function (data) {
+            // Trigger an alert or perform any DOM manipulation
+            // alert(data.message);
+
+            const durationContainer = document.getElementById('webphone-duration-container');
+            const testDivSocket = document.getElementById("testdiv-socket");
+            const draggableContainer = document.getElementById("draggable-container");
+            const iframeContainer = document.getElementById("iframe-container");
+            const callDurationText = document.getElementById("call-duration-text");
+            const endCallButton = document.getElementById("endcall-button");
+            let timeField = document.getElementById('time-field-webphone');
+            const closeButtonCallDuration = document.getElementById('close-button-call-duration');
+
+            testDivSocket.style.background = "blue";
+            draggableContainer.classList.remove("blinded");
+            iframeContainer.classList.add("blinded");
+            callDurationText.classList.add("blinded");
+
+            // timer function
+            (function() {
+                let ms = 0;
+                let sec = 0;
+                let min = 0;
+
+                function timer() {
+                    ms++;
+                    if (ms >= 100) {
+                        sec++;
+                        ms = 0;
+                    }
+                    if (sec === 60) {
+                        min++;
+                        sec = 0;
+                    }
+                    if (min === 60) {
+                        ms, sec, min = 0;
+                    }
+
+                    let milli = ms < 10 ? `0` + ms : ms;
+                    let seconds = sec < 10 ? `0` + sec : sec;
+                    let minute = min < 10 ? `0` + min : min;
+
+                    let timer = `${minute}:${seconds}`;
+                    timeField.innerHTML = timer;
+                }
+
+                // Start timer
+                function start() {
+                    time = setInterval(timer, 10);
+                }
+
+                // Stop timer
+                function stop() {
+                    clearInterval(time);
+                }
+
+                // Reset timer
+                function reset() {
+                    ms = 0;
+                    sec = 0;
+                    min = 0;
+
+                    timeField.textContent = `00:00:00`;
+                }
+
+                // Start the timer
+                start();
+
+                // Stop the timer when we press end call button
+                endCallButton.addEventListener('click', (e) => {
+                    // e.preventDefault();
+                    stop();
+
+                    closeButtonCallDuration.classList.remove('blinded');
+                    callDurationText.classList.remove('blinded');
+                    closeButtonCallDuration.addEventListener('click', () => {
+                        draggableContainer.classList.add('blinded');
+                        closeButtonCallDuration.classList.add('blinded');
+                        callDurationText.classList.add('blinded');
+                    });
+                });
+            })(); // IIFE
+        });
+    </script>
+
+</body>
+</html>
