@@ -7,6 +7,8 @@
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
     <link rel="stylesheet" href="/static/css/style.css">
+    <!-- moment js library for date & time -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <style>
         @font-face {
             font-family: 'Clash Display Variable';
@@ -49,86 +51,148 @@
             margin: 0 70px;
             font-weight: 400;
         }
+
+        .blinded{
+            display: none;
+        }
+
+        #recents-container::-webkit-scrollbar {
+            display: none;
+        }
     </style>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js" integrity="sha512-zoJXRvW2gC8Z0Xo3lBbao5+AS3g6YWr5ztKqaicua11xHo+AvE1b0lT9ODgrHTmNUxeCw0Ry4BGRYZfXu70weg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+
 </head>
 <body>
     <div class="modal" id="modal-dial">
-        <div style="display: flex; flex-direction: column;">
-            <div class="modal-content" style="justify-content: center; margin: 0 auto; align-items: center; text-align: center;">
-                <!-- Add Contact -->
-                <div style="margin-top: 1rem;">
-                    <span style= "font-size: 1.2rem; color:#0085FF; font-weight: 300; vertical-align: middle; letter-spacing: 0.5px;">Add Contact</span>
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
-                        <path d="M9.82361 0.632324C7.34843 0.662187 4.98305 1.65872 3.2327 3.40906C1.48236 5.15941 0.485825 7.52479 0.455963 9.99997C0.485825 12.4752 1.48236 14.8405 3.2327 16.5909C4.98305 18.3412 7.34843 19.3378 9.82361 19.3676C12.2988 19.3378 14.6642 18.3412 16.4145 16.5909C18.1649 14.8405 19.1614 12.4752 19.1913 9.99997C19.1614 7.52479 18.1649 5.15941 16.4145 3.40906C14.6642 1.65872 12.2988 0.662187 9.82361 0.632324ZM15.1766 10.6691H10.4927V15.3529H9.15449V10.6691H4.47067V9.33085H9.15449V4.64703H10.4927V9.33085H15.1766V10.6691Z" fill="#0085FF"/>
-                    </svg>
-                </div>
-                <!--  -->
-                            
-                <!-- Number Input Box -->
-                <div style="margin-top: 4rem;">
-                    <input id="phoneNumber" type="tel" style="vertical-align: middle; color: #FFFFFF; background-color: transparent; border: none; outline: none; text-align: center; font-weight: 500; font-family: 'Inter', sans-serif; font-size: 4rem;"></input>
-                </div>
-                <!--  -->
-    
-                <!-- Dial Pad -->
-                <div class="btn-group-vertical my-0" role="group" aria-label="Basic example" style="font-size: 2.5rem; padding: 0 30px;">
-                    <!-- Dial Pad Row 1 -->
-                    <div class="btn-group btn-group-lg">
-                        <button type="button" class="btnNumber">1</button>
-                        <button type="button" class="btnNumber">2</button>
-                        <button type="button" class="btnNumber">3</button>
+
+        <!-- Page Number One -->
+        <div id="page-number-one">
+            <div style="display: flex; flex-direction: column;">
+                <div class="modal-content" style="justify-content: center; margin: 0 auto; align-items: center; text-align: center;">
+                    <!-- Add Contact -->
+                    <div style="margin-top: 1rem;">
+                        <span style= "font-size: 1.2rem; color:#0085FF; font-weight: 300; vertical-align: middle; letter-spacing: 0.5px;">Add Contact Hello</span>          
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
+                            <path d="M9.82361 0.632324C7.34843 0.662187 4.98305 1.65872 3.2327 3.40906C1.48236 5.15941 0.485825 7.52479 0.455963 9.99997C0.485825 12.4752 1.48236 14.8405 3.2327 16.5909C4.98305 18.3412 7.34843 19.3378 9.82361 19.3676C12.2988 19.3378 14.6642 18.3412 16.4145 16.5909C18.1649 14.8405 19.1614 12.4752 19.1913 9.99997C19.1614 7.52479 18.1649 5.15941 16.4145 3.40906C14.6642 1.65872 12.2988 0.662187 9.82361 0.632324ZM15.1766 10.6691H10.4927V15.3529H9.15449V10.6691H4.47067V9.33085H9.15449V4.64703H10.4927V9.33085H15.1766V10.6691Z" fill="#0085FF"/>
+                        </svg>
                     </div>
-                    <!-- Dial Pad Row 2 -->
-                    <div class="btn-group btn-group-lg">
-                        <button type="button" class="btnNumber">4</button>
-                        <button type="button" class="btnNumber">5</button>
-                        <button type="button" class="btnNumber">6</button>
+                    <!--  -->
+                                
+                    <!-- Number Input Box -->
+                    <div style="margin-top: 4rem;">
+                        <input id="phoneNumber" type="tel" style="vertical-align: middle; color: #FFFFFF; background-color: transparent; border: none; outline: none; text-align: center; font-weight: 500; font-family: 'Inter', sans-serif; font-size: 4rem;"></input>
                     </div>
-                    <!-- Dial Pad Row 3 -->
-                    <div class="btn-group btn-group-lg">
-                        <button type="button" class="btnNumber">7</button>
-                        <button type="button" class="btnNumber">8</button>
-                        <button type="button" class="btnNumber">9</button>
+                    <!--  -->
+        
+                    <!-- Dial Pad -->
+                    <div class="btn-group-vertical my-0" role="group" aria-label="Basic example" style="font-size: 2.5rem; padding: 0 30px;">
+                        <!-- Dial Pad Row 1 -->
+                        <div class="btn-group btn-group-lg">
+                            <button type="button" class="btnNumber">1</button>
+                            <button type="button" class="btnNumber">2</button>
+                            <button type="button" class="btnNumber">3</button>
+                        </div>
+                        <!-- Dial Pad Row 2 -->
+                        <div class="btn-group btn-group-lg">
+                            <button type="button" class="btnNumber">4</button>
+                            <button type="button" class="btnNumber">5</button>
+                            <button type="button" class="btnNumber">6</button>
+                        </div>
+                        <!-- Dial Pad Row 3 -->
+                        <div class="btn-group btn-group-lg">
+                            <button type="button" class="btnNumber">7</button>
+                            <button type="button" class="btnNumber">8</button>
+                            <button type="button" class="btnNumber">9</button>
+                        </div>
+                        <!-- Dial Pad Row 4 -->
+                        <div class="btn-group btn-group-lg">
+                            <button type="button" class="btnNumber">+</button>
+                            <button type="button" class="btnNumber">0</button>
+                            <button type="button" class="btnNumber">#</button>
+                        </div>
                     </div>
-                    <!-- Dial Pad Row 4 -->
-                    <div class="btn-group btn-group-lg">
-                        <button type="button" class="btnNumber">+</button>
-                        <button type="button" class="btnNumber">0</button>
-                        <button type="button" class="btnNumber">#</button>
+                    <!--  -->
+        
+                    <!-- Call Button / Clear Button -->
+                    <div>
+                        <button class="secondLastRow" style="background-color: transparent; border: none; outline: none; vertical-align: middle; color: #0F0F1A;">
+                            <span>........</span>
+                        </button>
+                        <button class="secondLastRow" type="button" id="btnDial" style="background-color: transparent; border: none; outline: none; vertical-align: middle;">
+                            <svg width="57" height="57" viewBox="0 0 57 57" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="28.5" cy="28.5" r="28.5" fill="#03CB2F"/>
+                                <g clip-path="url(#clip0_7009_15436)">
+                                <path d="M42.0458 33.8517C40.0983 33.8517 38.2141 33.535 36.4566 32.965C35.9024 32.775 35.2849 32.9175 34.8574 33.345L32.3716 36.4642C27.8908 34.3267 23.6949 30.2892 21.4624 25.65L24.5499 23.0217C24.9774 22.5783 25.1041 21.9608 24.9299 21.4067C24.3441 19.6492 24.0433 17.765 24.0433 15.8175C24.0433 14.9625 23.3308 14.25 22.4758 14.25H16.9974C16.1424 14.25 15.1133 14.63 15.1133 15.8175C15.1133 30.5267 27.3524 42.75 42.0458 42.75C43.1699 42.75 43.6133 41.7525 43.6133 40.8817V35.4192C43.6133 34.5642 42.9008 33.8517 42.0458 33.8517Z" fill="white"/>
+                                </g>
+                                <defs>
+                                <clipPath id="clip0_7009_15436">
+                                <rect width="38" height="38" fill="white" transform="translate(10.3633 9.5)"/>
+                                </clipPath>
+                                </defs>
+                            </svg>      
+                        </button>
+                        <button class="secondLastRow" type="button" id="btnDelete" style="background-color: transparent; border: none; outline: none; vertical-align: middle;">
+                            <svg width="40" height="26" viewBox="0 0 40 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
+                                <rect x="12.1056" width="27.8946" height="25.3282" rx="3.01563" fill="#D9D9D9"/>
+                                <path d="M13.3184 0.759518C14.648 -0.302232 16.3105 0.923409 16.3373 2.98513L16.5856 22.0711C16.6129 24.1672 14.9345 25.5509 13.5778 24.5507L1.02123 15.2937C-0.33545 14.2935 -0.341643 11.6679 1.01013 10.5884L13.3184 0.759518Z" fill="#D9D9D9"/>
+                                <path d="M28.9176 7.41346C28.6236 7.06108 28.1486 7.06108 27.8546 7.41346L24.168 11.8227L20.4814 7.40442C20.1873 7.05204 19.7124 7.05204 19.4184 7.40442C19.1243 7.7568 19.1243 8.32604 19.4184 8.67842L23.105 13.0967L19.4184 17.5151C19.1243 17.8674 19.1243 18.4367 19.4184 18.7891C19.7124 19.1414 20.1873 19.1414 20.4814 18.7891L24.168 14.3707L27.8546 18.7891C28.1486 19.1414 28.6236 19.1414 28.9176 18.7891C29.2116 18.4367 29.2116 17.8674 28.9176 17.5151L25.231 13.0967L28.9176 8.67842C29.2041 8.33507 29.2041 7.7568 28.9176 7.41346Z" fill="#0B0B0B"/>
+                            </svg>    
+                        </button>                    
                     </div>
                 </div>
-                <!--  -->
-    
-                <!-- Call Button / Clear Button -->
-                <div>
-                    <button class="secondLastRow" style="background-color: transparent; border: none; outline: none; vertical-align: middle; color: #0F0F1A;">
-                        <span>........</span>
-                    </button>
-                    <button class="secondLastRow" type="button" id="btnDial" style="background-color: transparent; border: none; outline: none; vertical-align: middle;">
-                        <svg width="57" height="57" viewBox="0 0 57 57" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="28.5" cy="28.5" r="28.5" fill="#03CB2F"/>
-                            <g clip-path="url(#clip0_7009_15436)">
-                            <path d="M42.0458 33.8517C40.0983 33.8517 38.2141 33.535 36.4566 32.965C35.9024 32.775 35.2849 32.9175 34.8574 33.345L32.3716 36.4642C27.8908 34.3267 23.6949 30.2892 21.4624 25.65L24.5499 23.0217C24.9774 22.5783 25.1041 21.9608 24.9299 21.4067C24.3441 19.6492 24.0433 17.765 24.0433 15.8175C24.0433 14.9625 23.3308 14.25 22.4758 14.25H16.9974C16.1424 14.25 15.1133 14.63 15.1133 15.8175C15.1133 30.5267 27.3524 42.75 42.0458 42.75C43.1699 42.75 43.6133 41.7525 43.6133 40.8817V35.4192C43.6133 34.5642 42.9008 33.8517 42.0458 33.8517Z" fill="white"/>
-                            </g>
-                            <defs>
-                            <clipPath id="clip0_7009_15436">
-                            <rect width="38" height="38" fill="white" transform="translate(10.3633 9.5)"/>
-                            </clipPath>
-                            </defs>
-                        </svg>      
-                    </button>
-                    <button class="secondLastRow" type="button" id="btnDelete" style="background-color: transparent; border: none; outline: none; vertical-align: middle;">
-                        <svg width="40" height="26" viewBox="0 0 40 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
-                            <rect x="12.1056" width="27.8946" height="25.3282" rx="3.01563" fill="#D9D9D9"/>
-                            <path d="M13.3184 0.759518C14.648 -0.302232 16.3105 0.923409 16.3373 2.98513L16.5856 22.0711C16.6129 24.1672 14.9345 25.5509 13.5778 24.5507L1.02123 15.2937C-0.33545 14.2935 -0.341643 11.6679 1.01013 10.5884L13.3184 0.759518Z" fill="#D9D9D9"/>
-                            <path d="M28.9176 7.41346C28.6236 7.06108 28.1486 7.06108 27.8546 7.41346L24.168 11.8227L20.4814 7.40442C20.1873 7.05204 19.7124 7.05204 19.4184 7.40442C19.1243 7.7568 19.1243 8.32604 19.4184 8.67842L23.105 13.0967L19.4184 17.5151C19.1243 17.8674 19.1243 18.4367 19.4184 18.7891C19.7124 19.1414 20.1873 19.1414 20.4814 18.7891L24.168 14.3707L27.8546 18.7891C28.1486 19.1414 28.6236 19.1414 28.9176 18.7891C29.2116 18.4367 29.2116 17.8674 28.9176 17.5151L25.231 13.0967L28.9176 8.67842C29.2041 8.33507 29.2041 7.7568 28.9176 7.41346Z" fill="#0B0B0B"/>
-                        </svg>    
-                    </button>                    
-                </div>
-                <!--  -->
             </div>
         </div>
-    
+        <!-- This is the end of Page Number One -->
+
+        <!-- Page Number Two -->
+        <div id="page-number-two">
+            <div style="display: flex; flex-direction: column;">
+                <div class="modal-content" style="justify-content: center; margin: 0 auto; align-items: center; text-align: center;">
+                    <!-- Search Bar -->
+                    <div style="margin-top: 3.5rem; display: flex; justify-content: center;">
+                        <form>
+                            <label for="searchInput" style="display: none;">Search:</label>
+                            <div style="position: relative;">
+                                <input type="text" id="searchInput" name="searchInput" placeholder="Search by Name/Phone Number, Ticket Number/Login ID" style="font-family: 'Clash Display Variable'; background-color: #0F0F1A; font-size: 1.2rem; color: #4B4E75; font-weight: 300; vertical-align: middle; letter-spacing: 0.5px; border: 0.5px solid #2C2E45; outline: none; height: 50px; width: 600px; text-align: center; border-radius: 4px; padding-left: 30px;">
+                                <button type="submit" style="background: none; border: none; cursor: pointer; position: absolute; top: 50%; left: 10px; transform: translateY(-50%);">
+                                    <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M15.677 16.385L9.415 10.123C8.915 10.549 8.34 10.8787 7.69 11.112C7.04 11.3453 6.38667 11.462 5.73 11.462C4.12867 11.462 2.77333 10.9077 1.664 9.799C0.554667 8.68967 0 7.33467 0 5.734C0 4.13333 0.554 2.77767 1.662 1.667C2.77067 0.555666 4.12533 0 5.726 0C7.32733 0 8.68333 0.554667 9.794 1.664C10.9047 2.77333 11.46 4.129 11.46 5.731C11.46 6.42567 11.337 7.098 11.091 7.748C10.8443 8.398 10.521 8.954 10.121 9.416L16.383 15.677L15.676 16.385H15.677ZM5.73 10.461C7.05667 10.461 8.177 10.0043 9.091 9.091C10.0043 8.17767 10.461 7.05733 10.461 5.73C10.461 4.40333 10.0043 3.28333 9.091 2.37C8.17767 1.45667 7.05767 1 5.731 1C4.40433 1 3.284 1.45667 2.37 2.37C1.45667 3.28333 1 4.40333 1 5.73C1 7.05667 1.45667 8.17667 2.37 9.09C3.28333 10.0033 4.40333 10.461 5.73 10.461Z" fill="#73759D"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <!--  -->
+                    <!-- Recents Container -->
+                    <div id="recents-container" style="margin-top: 40px; width: 800px; height: 430px; border: 1px solid #2C2E45; overflow-x: auto; white-space: nowrap; display: flex; border-radius: 5px;">
+                        <div id="small-container-inside-recent-container" style="margin: 0; padding: 0;">
+                            <!-- Your small containers go here -->
+                            <!-- <div style="width: 200px; height: 421px; border: 1px solid #2C2E45; display: inline-block; vertical-align: top; color: #FFFFFF;">
+                                    <br>
+                                    <span>Monday</span>
+                                    <span style="font-size: x-large;">13th</span>
+                                    <div style="width: 197px; border: 1px solid #2C2E45; margin-top: 10px;"></div>
+                                    <div>
+                                        hi
+                                    </div>
+                            </div>
+                            <div style="width: 200px; height: 421px; border: 1px solid #2C2E45; display: inline-block;"></div>
+                            <div style="width: 200px; height: 421px; border: 1px solid #2C2E45; display: inline-block;"></div>
+                            <div style="width: 200px; height: 421px; border: 1px solid #2C2E45; display: inline-block;"></div>
+                            <div style="width: 200px; height: 421px; border: 1px solid #2C2E45; display: inline-block;"></div> -->
+                            <!-- Add more small containers as needed -->
+                        </div>
+                    </div>                            
+                    <!--  -->
+                </div>
+            </div>
+        </div>
+        <!-- This is the end of Page Number Two -->
+        
+        <!-- This is common for all -->
         <!-- Dialpad, Recents, Contacts -->
         <div style="display: flex; justify-content: center; margin-top: 4.5rem;">
     
@@ -137,7 +201,7 @@
                 <svg width="18" height="24" viewBox="0 0 18 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
                     <path d="M9 19.6364C7.7625 19.6364 6.75 20.6182 6.75 21.8182C6.75 23.0182 7.7625 24 9 24C10.2375 24 11.25 23.0182 11.25 21.8182C11.25 20.6182 10.2375 19.6364 9 19.6364ZM2.25 0C1.0125 0 0 0.981818 0 2.18182C0 3.38182 1.0125 4.36364 2.25 4.36364C3.4875 4.36364 4.5 3.38182 4.5 2.18182C4.5 0.981818 3.4875 0 2.25 0ZM2.25 6.54545C1.0125 6.54545 0 7.52727 0 8.72727C0 9.92727 1.0125 10.9091 2.25 10.9091C3.4875 10.9091 4.5 9.92727 4.5 8.72727C4.5 7.52727 3.4875 6.54545 2.25 6.54545ZM2.25 13.0909C1.0125 13.0909 0 14.0727 0 15.2727C0 16.4727 1.0125 17.4545 2.25 17.4545C3.4875 17.4545 4.5 16.4727 4.5 15.2727C4.5 14.0727 3.4875 13.0909 2.25 13.0909ZM15.75 4.36364C16.9875 4.36364 18 3.38182 18 2.18182C18 0.981818 16.9875 0 15.75 0C14.5125 0 13.5 0.981818 13.5 2.18182C13.5 3.38182 14.5125 4.36364 15.75 4.36364ZM9 13.0909C7.7625 13.0909 6.75 14.0727 6.75 15.2727C6.75 16.4727 7.7625 17.4545 9 17.4545C10.2375 17.4545 11.25 16.4727 11.25 15.2727C11.25 14.0727 10.2375 13.0909 9 13.0909ZM15.75 13.0909C14.5125 13.0909 13.5 14.0727 13.5 15.2727C13.5 16.4727 14.5125 17.4545 15.75 17.4545C16.9875 17.4545 18 16.4727 18 15.2727C18 14.0727 16.9875 13.0909 15.75 13.0909ZM15.75 6.54545C14.5125 6.54545 13.5 7.52727 13.5 8.72727C13.5 9.92727 14.5125 10.9091 15.75 10.9091C16.9875 10.9091 18 9.92727 18 8.72727C18 7.52727 16.9875 6.54545 15.75 6.54545ZM9 6.54545C7.7625 6.54545 6.75 7.52727 6.75 8.72727C6.75 9.92727 7.7625 10.9091 9 10.9091C10.2375 10.9091 11.25 9.92727 11.25 8.72727C11.25 7.52727 10.2375 6.54545 9 6.54545ZM9 0C7.7625 0 6.75 0.981818 6.75 2.18182C6.75 3.38182 7.7625 4.36364 9 4.36364C10.2375 4.36364 11.25 3.38182 11.25 2.18182C11.25 0.981818 10.2375 0 9 0Z" fill="#00A54F"/>
                 </svg>
-                <span style="vertical-align: middle; color: #FFFFFF;">Dialpad</span>  
+                <span style="vertical-align: middle; color: #FFFFFF; cursor: pointer;" id="dialpad-footer-icon">Dialpad</span>  
             </div>
             <!--  -->                
                         
@@ -146,7 +210,7 @@
                 <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
                     <path d="M12.462 20C10.4307 20 8.66033 19.3367 7.151 18.01C5.64167 16.6847 4.768 15.0147 4.53 13H5.541C5.813 14.72 6.59667 16.15 7.892 17.29C9.18867 18.43 10.712 19 12.462 19C14.412 19 16.066 18.3207 17.424 16.962C18.782 15.6033 19.4613 13.9493 19.462 12C19.462 10.05 18.7827 8.39567 17.424 7.037C16.0653 5.67833 14.4113 4.99933 12.462 5C11.4273 5 10.4547 5.21867 9.544 5.656C8.634 6.09333 7.83067 6.69533 7.134 7.462H9.615V8.462H5.462V4.308H6.462V6.696C7.23533 5.84733 8.14133 5.186 9.18 4.712C10.2187 4.23733 11.3127 4 12.462 4C13.5707 4 14.61 4.20867 15.58 4.626C16.55 5.04333 17.3973 5.61433 18.122 6.339C18.8467 7.06367 19.418 7.91133 19.836 8.882C20.2533 9.852 20.462 10.8913 20.462 12C20.462 13.1087 20.2533 14.148 19.836 15.118C19.4187 16.088 18.8473 16.9357 18.122 17.661C17.3973 18.3857 16.55 18.9567 15.58 19.374C14.61 19.7913 13.5707 20 12.462 20ZM15.665 15.854L12.019 12.208V7H13.019V11.792L16.373 15.146L15.665 15.854Z" fill="#585B8B"/>
                 </svg>
-                <span style="vertical-align: middle; color: #FFFFFF;">Recents</span>
+                <span style="vertical-align: middle; color: #FFFFFF; cursor: pointer;" id="recents-footer-icon">Recents</span>
             </div>
             <!--  -->
                                             
@@ -155,7 +219,7 @@
                 <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;"> 
                     <path d="M5 21.385V20.385H20V21.385H5ZM5 3.61499V2.61499H20V3.61499H5ZM12.5 14C13.192 14 13.782 13.7567 14.27 13.27C14.7567 12.782 15 12.192 15 11.5C15 10.808 14.7567 10.218 14.27 9.72999C13.7813 9.24332 13.1913 8.99999 12.5 8.99999C11.8087 8.99999 11.2187 9.24332 10.73 9.72999C10.2433 10.218 10 10.808 10 11.5C10 12.192 10.2433 12.782 10.73 13.27C11.218 13.7567 11.808 14 12.5 14ZM5.115 19C4.655 19 4.271 18.846 3.963 18.538C3.65433 18.2293 3.5 17.845 3.5 17.385V6.61499C3.5 6.15499 3.65433 5.77099 3.963 5.46299C4.271 5.15432 4.655 4.99999 5.115 4.99999H19.885C20.345 4.99999 20.729 5.15432 21.037 5.46299C21.3457 5.77099 21.5 6.15499 21.5 6.61499V17.385C21.5 17.845 21.346 18.229 21.038 18.537C20.7293 18.8457 20.345 19 19.885 19H5.115ZM7.558 18H17.442C16.692 17.3233 15.9053 16.8207 15.082 16.492C14.26 16.164 13.3993 16 12.5 16C11.6013 16 10.7403 16.164 9.917 16.492C9.09433 16.8207 8.30867 17.3233 7.558 18Z" fill="#585B8B"/>
                 </svg>
-                <span style="vertical-align: middle; color: #FFFFFF;">Contacts</span>
+                <span style="vertical-align: middle; color: #FFFFFF; cursor: pointer;" id="contacts-footer-icon">Contacts</span>
             </div>
             <!--  -->
         
@@ -165,16 +229,17 @@
 
     <!-- Include every other thing -->
 
-    <!-- Modal call in progress -->
-    {% include 'call_in_progress_modal.html' %}
-
-    <!-- Modal incoming call -->
-    {% include 'incoming_call_modal.html' %}
-
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://media.twiliocdn.com/sdk/js/client/v1.8/twilio.min.js"></script>
     <script type="text/javascript" src="/static/js/main.js"></script>
     <script type="text/javascript" src="/static/js/modals.js" defer></script>
+
+    <!-- Script for footer click UI manipulation -->
+    <script type="text/javascript" src="/static/js/footerswitch.js"></script>
+
+    <!-- Small container with date -->
+    <script type="text/javascript" src="/static/js/smallcontainerwithdate.js"></script>
+
 </body>
 </html>
 
