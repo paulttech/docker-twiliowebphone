@@ -77,7 +77,6 @@
                     <!-- Add Contact -->
                     <div style="margin-top: 1rem;">
                         <span style= "font-size: 1.2rem; color:#0085FF; font-weight: 300; vertical-align: middle; letter-spacing: 0.5px;">Add Contact Namaste</span>
-                        <div id="output" style="color: #FFFFFF;">output here</div>          
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
                             <path d="M9.82361 0.632324C7.34843 0.662187 4.98305 1.65872 3.2327 3.40906C1.48236 5.15941 0.485825 7.52479 0.455963 9.99997C0.485825 12.4752 1.48236 14.8405 3.2327 16.5909C4.98305 18.3412 7.34843 19.3378 9.82361 19.3676C12.2988 19.3378 14.6642 18.3412 16.4145 16.5909C18.1649 14.8405 19.1614 12.4752 19.1913 9.99997C19.1614 7.52479 18.1649 5.15941 16.4145 3.40906C14.6642 1.65872 12.2988 0.662187 9.82361 0.632324ZM15.1766 10.6691H10.4927V15.3529H9.15449V10.6691H4.47067V9.33085H9.15449V4.64703H10.4927V9.33085H15.1766V10.6691Z" fill="#0085FF"/>
                         </svg>
@@ -151,7 +150,7 @@
         <!-- This is the end of Page Number One -->
 
         <!-- Page Number Two -->
-        <div id="page-number-two">
+        <div id="page-number-two" class="blinded">
             <div style="display: flex; flex-direction: column;">
                 <div class="modal-content" style="justify-content: center; margin: 0 auto; align-items: center; text-align: center;">
                     <!-- Search Bar -->
@@ -170,8 +169,11 @@
                     </div>
                     <!--  -->
                     <!-- Recents Container -->
-                    <div id="recents-container" style="margin-top: 40px; width: 800px; height: 430px; border: 1px solid #2C2E45; overflow-x: auto; white-space: nowrap; display: flex; border-radius: 5px;">
-                        <div id="small-container-inside-recent-container" style="margin: 0; padding: 0;">
+                    <div id="recents-container" style="margin-top: 40px; width: 800px; height: 435px; border: 1px solid #2C2E45; overflow-x: auto; white-space: nowrap; display: flex; border-radius: 5px;">                      
+                        <div id="small-container-inside-recent-container" style="margin: 0; padding: 0; display: flex; flex-direction: column; align-items: flex-start;">
+                            <div style="color: #FFF; margin-left: 15px; margin-top: 15px;">
+                                <p style="margin: 0; font-size: large;">Call History</p>
+                            </div>
                             <!-- Your small containers go here -->
                             <!-- <div style="width: 200px; height: 421px; border: 1px solid #2C2E45; display: inline-block; vertical-align: top; color: #FFFFFF;">
                                     <br>
@@ -203,12 +205,19 @@
                                 {% for recorded_url in recorded_urls|reverse %}
                                 <div style="border: #2C2E45 1px solid; margin-left: 10px; margin-top: 15px">
                                     <div style="margin-top: 15px; margin-bottom: 5px;">
-                                        <span id="phone-number-to-send-to-search-input" style="margin-left: 10px; color: #FFFFFF; font-size: 25px; cursor: copy;">{{ recorded_url.to_number }}</span>                                   
+                                        <span id="phone-number-to-send-to-search-input" style="margin-left: 10px; color: #FFFFFF; font-size: 25px; cursor: copy; display: flex; align-items: center;">                    
+                                            <svg width="25" height="26" viewBox="0 0 28 29" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 10px;">
+                                                <rect y="0.491699" width="28" height="28" rx="14" fill="#FF9B3E" fill-opacity="0.1"/>
+                                                <path d="M14.677 13.0791L19.5268 8.223H16.0895V7.17822H21.3134V12.4021H20.2686V8.96479L15.4125 13.8157L14.677 13.0802V13.0791ZM18.13 15.7569C18.5611 15.7569 18.9748 15.927 19.2813 16.2302C19.3962 16.3451 19.5237 16.4642 19.6647 16.5896L20.114 16.9897C20.2707 17.1308 20.418 17.2781 20.5538 17.4296C20.6897 17.5821 20.8182 17.7378 20.9383 17.8955C21.0574 18.0523 21.1473 18.2215 21.2068 18.4012C21.2674 18.5809 21.3029 18.7606 21.3134 18.9403C21.313 19.3711 21.143 19.7843 20.8401 20.0906C20.5622 20.3685 20.3125 20.613 20.0889 20.8261C19.8772 21.0293 19.6446 21.2097 19.3952 21.3642C19.1549 21.5105 18.8864 21.6202 18.5876 21.6912C18.2417 21.7671 17.8886 21.8052 17.5344 21.8051C16.9148 21.801 16.299 21.7074 15.7061 21.5272C15.059 21.3337 14.4325 21.0769 13.8359 20.7603C13.1983 20.4225 12.5899 20.0321 12.017 19.5933C11.4225 19.1407 10.8604 18.6471 10.3349 18.116C9.80727 17.5831 9.31727 17.019 8.86593 16.4266C8.42944 15.8575 8.04416 15.2509 7.71458 14.6139C7.40805 14.0208 7.15694 13.4007 6.96443 12.7615C6.78512 12.1795 6.6915 11.5745 6.68652 10.9655C6.68652 10.5518 6.72205 10.1987 6.79309 9.90404C6.85896 9.62212 6.96898 9.35237 7.11906 9.10479C7.26533 8.86449 7.44608 8.63464 7.65817 8.41106C7.87025 8.18748 8.11787 7.93464 8.39996 7.65151C8.70671 7.34805 9.12086 7.17796 9.55234 7.17822C9.82399 7.17822 10.0852 7.25136 10.3359 7.39763C10.5867 7.54598 10.8291 7.72464 11.0631 7.93778C11.2961 8.14986 11.5123 8.3724 11.7077 8.60643C11.9031 8.84046 12.088 9.0421 12.2614 9.21031C12.5647 9.51681 12.7347 9.93053 12.7347 10.3617C12.7385 10.5572 12.7029 10.7516 12.6303 10.9331C12.5641 11.0941 12.4762 11.2453 12.3691 11.3824C12.2645 11.5137 12.1496 11.6363 12.0253 11.7491C11.9 11.864 11.7861 11.9727 11.6826 12.0761C11.5866 12.1711 11.4966 12.272 11.4131 12.3781C11.3391 12.4701 11.3015 12.5861 11.3076 12.704C11.3076 12.7699 11.3567 12.8733 11.4538 13.0143C11.58 13.1908 11.7164 13.3596 11.8623 13.52C12.2681 13.9759 12.6901 14.4171 13.1276 14.8427C13.372 15.083 13.6092 15.3128 13.838 15.5364C14.0658 15.76 14.2873 15.9721 14.4994 16.1737C14.7114 16.3743 14.8912 16.5457 15.0374 16.6878C15.1837 16.8288 15.2986 16.9385 15.3801 17.0137C15.4732 17.1103 15.5979 17.17 15.7314 17.1821C15.865 17.1942 15.9984 17.1578 16.1073 17.0796C16.2044 17.0085 16.3058 16.9208 16.4092 16.8184C16.5126 16.7139 16.6182 16.6 16.7268 16.4746C16.8355 16.3493 16.9609 16.2354 17.1029 16.132C17.244 16.0285 17.3934 15.9387 17.5522 15.8624C17.7341 15.7822 17.9325 15.746 18.131 15.7569H18.13ZM17.5344 20.7603C17.8667 20.7603 18.1435 20.73 18.3671 20.6705C18.5853 20.6127 18.7923 20.5188 18.9794 20.3926C19.1643 20.2672 19.3377 20.1209 19.5017 19.9527C19.6647 19.7834 19.8632 19.5849 20.0973 19.3572C20.2122 19.2423 20.2686 19.1064 20.2686 18.9487C20.2686 18.8776 20.2247 18.7773 20.138 18.6457C20.0353 18.4945 19.9262 18.3477 19.811 18.2058C19.6718 18.0328 19.5218 17.8688 19.3617 17.7148C19.1946 17.5528 19.0306 17.4024 18.8728 17.2666C18.7355 17.1465 18.5911 17.0349 18.4403 16.9323C18.3097 16.8455 18.2062 16.8017 18.13 16.8017C18.013 16.8025 17.8992 16.8394 17.804 16.9072C17.694 16.9832 17.5924 17.0708 17.501 17.1684C17.4038 17.2728 17.2973 17.3867 17.1834 17.5121C17.0685 17.6375 16.9431 17.7514 16.8073 17.8548C16.6714 17.9582 16.522 18.0481 16.358 18.1243C16.1786 18.2033 15.9833 18.2395 15.7876 18.2299C15.5732 18.2312 15.3608 18.1894 15.163 18.1068C14.9652 18.0242 14.786 17.9026 14.6362 17.7493L10.7434 13.8543C10.5931 13.7051 10.4738 13.5275 10.3923 13.332C10.3099 13.1323 10.2656 12.919 10.2617 12.703C10.2617 12.4909 10.2973 12.3028 10.3673 12.1399C10.4383 11.9769 10.525 11.8243 10.6285 11.6823C10.7329 11.5412 10.8468 11.419 10.9722 11.3155C11.0976 11.2121 11.2114 11.1034 11.3149 10.9885C11.4183 10.8746 11.5082 10.7743 11.5844 10.6866C11.6614 10.5962 11.6993 10.479 11.69 10.3606C11.69 10.2896 11.6461 10.1893 11.5594 10.0576C11.4581 9.90835 11.3493 9.76434 11.2334 9.62613C11.0914 9.45587 10.9415 9.29236 10.7841 9.13613C10.6279 8.9788 10.4644 8.82889 10.2941 8.68688C10.1525 8.56863 10.0053 8.45707 9.85324 8.35255C9.71742 8.25957 9.61712 8.21673 9.5513 8.22195C9.47396 8.2206 9.39717 8.23511 9.32565 8.26457C9.25413 8.29404 9.18941 8.33785 9.13548 8.3933C8.93818 8.59058 8.73967 8.78666 8.53996 8.98151C8.37482 9.13945 8.22702 9.31457 8.09906 9.50389C7.97522 9.69126 7.88408 9.89827 7.82951 10.1161C7.76445 10.3861 7.73148 10.6628 7.7313 10.9405C7.7313 11.4628 7.81488 12.0009 7.98414 12.5557C8.16387 13.1375 8.39898 13.7008 8.68622 14.2378C8.98608 14.803 9.34443 15.3536 9.76339 15.8864C10.1823 16.4193 10.6316 16.9281 11.1112 17.4118C12.0501 18.362 13.1221 19.1707 14.2935 19.8127C14.8206 20.1002 15.3759 20.3327 15.9506 20.5064C16.4642 20.664 16.9973 20.7491 17.5344 20.7593V20.7603Z" fill="#FF9B3E"/>
+                                            </svg>  
+                                            {{ recorded_url.to_number }}
+                                        </span>                                   
                                         <small style="margin-left: 10px; color: #b1abab;">{{ recorded_url.recording_duration }} second(s)</small>
+                                        <small class="rendered-date" style="color: #b1abab; margin-left: 10px;"></small>      
                                     </div>
-                                    <a href="{{ recorded_url.recording_url }}" target="_blank" style="margin-left: 10px; color: #b1abab; width: 765px; overflow-x: hidden; text-overflow: ellipsis; white-space: nowrap; display: block;">
-                                        <strong id="recorded-url">URL: </strong>{{ recorded_url.recording_url }}
-                                    </a>
+                                    <p id="recorded-url" style="display: flex; align-items: center; margin-left: 10px; ">
+                                        <span style="color: #FFFFFF;">Recording:</span><a href="{{ recorded_url.recording_url }}" target="_blank" style="color: #b1abab; width: 675px; overflow-x: hidden; text-overflow: ellipsis; white-space: nowrap; display: block; margin-left: 10px;">{{ recorded_url.recording_url }}</a>
+                                    </p>
                                     <br/>
                                 </div>
                                 {% endfor %}
@@ -273,9 +282,28 @@
             $('#recorded-urls').on('click', '[id^=phone-number-to-send-to-search-input]', function() {
                 // Get the text content of the clicked phone number
                 var phoneNumber = $(this).text().trim();
-    
+
+                $('#page-number-one').show()
+                $('#page-number-two').hide()
+
                 // Update the value of the input field with the clicked phone number
                 $('#phoneNumber').val(phoneNumber);
+            });
+        });
+    </script>
+
+    <!-- Rendered date -->
+    <script>
+        // Add JavaScript logic to display the rendered date
+        document.addEventListener('DOMContentLoaded', function() {
+            var renderedDates = document.querySelectorAll('.rendered-date');
+            renderedDates.forEach(function(element, index) {
+                var storedDate = localStorage.getItem('renderedDate_' + index);
+                if (!storedDate) {
+                    storedDate = new Date().toLocaleString();
+                    localStorage.setItem('renderedDate_' + index, storedDate);
+                }
+                element.textContent = 'Rendered on: ' + storedDate;
             });
         });
     </script>
