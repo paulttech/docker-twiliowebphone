@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="/static/css/style.css">
     <!-- moment js library for date & time -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <!-- JQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <style>
         @font-face {
             font-family: 'Clash Display Variable';
@@ -61,7 +63,7 @@
         }
     </style>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.min.js"></script> -->
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js" integrity="sha512-zoJXRvW2gC8Z0Xo3lBbao5+AS3g6YWr5ztKqaicua11xHo+AvE1b0lT9ODgrHTmNUxeCw0Ry4BGRYZfXu70weg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
 
 </head>
@@ -74,7 +76,8 @@
                 <div class="modal-content" style="justify-content: center; margin: 0 auto; align-items: center; text-align: center;">
                     <!-- Add Contact -->
                     <div style="margin-top: 1rem;">
-                        <span style= "font-size: 1.2rem; color:#0085FF; font-weight: 300; vertical-align: middle; letter-spacing: 0.5px;">Add Contact Hello</span>          
+                        <span style= "font-size: 1.2rem; color:#0085FF; font-weight: 300; vertical-align: middle; letter-spacing: 0.5px;">Add Contact Namaste</span>
+                        <div id="output" style="color: #FFFFFF;">output here</div>          
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
                             <path d="M9.82361 0.632324C7.34843 0.662187 4.98305 1.65872 3.2327 3.40906C1.48236 5.15941 0.485825 7.52479 0.455963 9.99997C0.485825 12.4752 1.48236 14.8405 3.2327 16.5909C4.98305 18.3412 7.34843 19.3378 9.82361 19.3676C12.2988 19.3378 14.6642 18.3412 16.4145 16.5909C18.1649 14.8405 19.1614 12.4752 19.1913 9.99997C19.1614 7.52479 18.1649 5.15941 16.4145 3.40906C14.6642 1.65872 12.2988 0.662187 9.82361 0.632324ZM15.1766 10.6691H10.4927V15.3529H9.15449V10.6691H4.47067V9.33085H9.15449V4.64703H10.4927V9.33085H15.1766V10.6691Z" fill="#0085FF"/>
                         </svg>
@@ -83,7 +86,7 @@
                                 
                     <!-- Number Input Box -->
                     <div style="margin-top: 4rem;">
-                        <input id="phoneNumber" type="tel" style="vertical-align: middle; color: #FFFFFF; background-color: transparent; border: none; outline: none; text-align: center; font-weight: 500; font-family: 'Inter', sans-serif; font-size: 4rem;"></input>
+                        <input id="phoneNumber" type="tel" style="vertical-align: middle; color: #FFFFFF; background-color: transparent; border: none; outline: none; text-align: center; font-weight: 500; font-family: 'Clash Display Variable', 'Inter', sans-serif; font-size: 4rem;"></input>
                     </div>
                     <!--  -->
         
@@ -175,15 +178,41 @@
                                     <span>Monday</span>
                                     <span style="font-size: x-large;">13th</span>
                                     <div style="width: 197px; border: 1px solid #2C2E45; margin-top: 10px;"></div>
+                                    <svg width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                        <circle cx="16.128" cy="16.628" r="16.128" fill="#D9D9D9"/>
+                                        <circle cx="16.128" cy="16.628" r="16.128" fill="url(#pattern0)"/>
+                                        <defs>
+                                        <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
+                                        <use xlink:href="#image0_7146_18065" transform="translate(0 -0.249712) scale(0.0011534)"/>
+                                        </pattern>
+                              
+                                        </defs>
+                                    </svg>
+                                        
                                     <div>
                                         hi
                                     </div>
-                            </div>
-                            <div style="width: 200px; height: 421px; border: 1px solid #2C2E45; display: inline-block;"></div>
+                            </div> -->
+                            <!-- <div style="width: 200px; height: 421px; border: 1px solid #2C2E45; display: inline-block;"></div>
                             <div style="width: 200px; height: 421px; border: 1px solid #2C2E45; display: inline-block;"></div>
                             <div style="width: 200px; height: 421px; border: 1px solid #2C2E45; display: inline-block;"></div>
                             <div style="width: 200px; height: 421px; border: 1px solid #2C2E45; display: inline-block;"></div> -->
                             <!-- Add more small containers as needed -->
+                            <!-- Recorded URLs -->
+                            <div id="recorded-urls" style="display: flex; flex-direction: column; align-items: flex-start; text-align: left;">
+                                {% for recorded_url in recorded_urls|reverse %}
+                                <div style="border: #2C2E45 1px solid; margin-left: 10px; margin-top: 15px">
+                                    <div style="margin-top: 15px; margin-bottom: 5px;">
+                                        <span id="phone-number-to-send-to-search-input" style="margin-left: 10px; color: #FFFFFF; font-size: 25px; cursor: copy;">{{ recorded_url.to_number }}</span>                                   
+                                        <small style="margin-left: 10px; color: #b1abab;">{{ recorded_url.recording_duration }} second(s)</small>
+                                    </div>
+                                    <a href="{{ recorded_url.recording_url }}" target="_blank" style="margin-left: 10px; color: #b1abab; width: 765px; overflow-x: hidden; text-overflow: ellipsis; white-space: nowrap; display: block;">
+                                        <strong id="recorded-url">URL: </strong>{{ recorded_url.recording_url }}
+                                    </a>
+                                    <br/>
+                                </div>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>                            
                     <!--  -->
@@ -231,15 +260,28 @@
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://media.twiliocdn.com/sdk/js/client/v1.8/twilio.min.js"></script>
-    <script type="text/javascript" src="/static/js/main.js"></script>
+    <script type="module" src="/static/js/main.mjs"></script>
     <script type="text/javascript" src="/static/js/modals.js" defer></script>
 
     <!-- Script for footer click UI manipulation -->
     <script type="text/javascript" src="/static/js/footerswitch.js"></script>
 
-    <!-- Small container with date -->
-    <script type="text/javascript" src="/static/js/smallcontainerwithdate.js"></script>
+    <!-- Send phone number to input when we click on the number -->
+    <script>
+        $(document).ready(function() {
+            // Add a click event listener to elements with the id "phone-number-to-send-to-search-input"
+            $('#recorded-urls').on('click', '[id^=phone-number-to-send-to-search-input]', function() {
+                // Get the text content of the clicked phone number
+                var phoneNumber = $(this).text().trim();
+    
+                // Update the value of the input field with the clicked phone number
+                $('#phoneNumber').val(phoneNumber);
+            });
+        });
+    </script>
 
+    <!-- Small container with date -->
+    <!-- <script type="text/javascript" src="/static/js/smallcontainerwithdate.js"></script> -->
 </body>
 </html>
 
