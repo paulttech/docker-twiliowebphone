@@ -174,6 +174,7 @@
                             <div style="color: #FFF; margin-left: 15px; margin-top: 15px;">
                                 <p style="margin: 0; font-size: large;">Call History</p>
                             </div>
+
                             <!-- Your small containers go here -->
                             <!-- <div style="width: 200px; height: 421px; border: 1px solid #2C2E45; display: inline-block; vertical-align: top; color: #FFFFFF;">
                                     <br>
@@ -203,7 +204,7 @@
                             <!-- Recorded URLs -->
                             <div id="recorded-urls" style="display: flex; flex-direction: column; align-items: flex-start; text-align: left;">
                                 {% for recorded_url in recorded_urls|reverse %}
-                                <div style="border: #2C2E45 1px solid; margin-left: 10px; margin-top: 15px">
+                                <div class="recorded-url-container" style="border: #2C2E45 1px solid; margin-left: 10px; margin-top: 15px">
                                     <div style="margin-top: 15px; margin-bottom: 5px;">
                                         <span id="phone-number-to-send-to-search-input" style="margin-left: 10px; color: #FFFFFF; font-size: 25px; cursor: copy; display: flex; align-items: center;">                    
                                             <svg width="25" height="26" viewBox="0 0 28 29" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 10px;">
@@ -213,7 +214,7 @@
                                             {{ recorded_url.to_number }}
                                         </span>                                   
                                         <small style="margin-left: 10px; color: #b1abab;">{{ recorded_url.recording_duration }} second(s)</small>
-                                        <small class="rendered-date" style="color: #b1abab; margin-left: 10px;"></small>      
+                                        <small class="rendered-date" style="color: #FFFFFF; margin-left: 480px; font-size: large;"></small>      
                                     </div>
                                     <p id="recorded-url" style="display: flex; align-items: center; margin-left: 10px; ">
                                         <span style="color: #FFFFFF;">Recording:</span><a href="{{ recorded_url.recording_url }}" target="_blank" style="color: #b1abab; width: 675px; overflow-x: hidden; text-overflow: ellipsis; white-space: nowrap; display: block; margin-left: 10px;">{{ recorded_url.recording_url }}</a>
@@ -303,10 +304,39 @@
                     storedDate = new Date().toLocaleString();
                     localStorage.setItem('renderedDate_' + index, storedDate);
                 }
-                element.textContent = 'Rendered on: ' + storedDate;
+                element.textContent = storedDate;
             });
         });
     </script>
+
+    <!-- Search logic -->
+    <!-- Add this script tag at the end of your HTML body or in your JavaScript file -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        const searchForm = document.querySelector("form");
+        const recordedURLs = document.querySelectorAll(".recorded-url-container");
+    
+        searchForm.addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevents the form from submitting and refreshing the page
+    
+            const searchInput = document.getElementById("searchInput").value.toLowerCase();
+    
+            recordedURLs.forEach(function (urlContainer) {
+            const phoneNumber = urlContainer.querySelector("#phone-number-to-send-to-search-input").textContent.toLowerCase();
+            const recordingUrl = urlContainer.querySelector("#recorded-url").textContent.toLowerCase();
+    
+            // Check if the search input matches either the phone number or recording URL
+            if (phoneNumber.includes(searchInput) || recordingUrl.includes(searchInput)) {
+                urlContainer.style.display = "block"; // Show the matching URL container
+            } else {
+                urlContainer.style.display = "none"; // Hide non-matching URL containers
+            }
+            });
+        });
+        });
+    </script>
+  
+
 
     <!-- Small container with date -->
     <!-- <script type="text/javascript" src="/static/js/smallcontainerwithdate.js"></script> -->
