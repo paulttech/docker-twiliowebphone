@@ -230,6 +230,65 @@
             </div>
         </div>
         <!-- This is the end of Page Number Two -->
+
+        <!-- Page Number Three -->
+        <div id="page-number-three">
+            <div style="display: flex; flex-direction: column;">
+                
+                <div class="modal-content" style="justify-content: center; margin: 0 auto; align-items: center; text-align: center;">
+                   
+                    <!-- Search Bar for Contacts -->
+                    <div style="margin-top: 3.5rem; display: flex; justify-content: center;">
+                        <form>
+                            <label for="searchInputContacts" style="display: none;">Search:</label>
+                            <div style="position: relative;">
+                                <input type="text" id="searchInputContacts" name="searchInputContacts" placeholder="Search by Name/Phone Number" style="font-family: 'Clash Display Variable'; background-color: #0F0F1A; font-size: 1.2rem; color: #4B4E75; font-weight: 300; vertical-align: middle; letter-spacing: 0.5px; border: 0.5px solid #2C2E45; outline: none; height: 50px; width: 600px; text-align: center; border-radius: 4px; padding-left: 30px; color: #FFFFFF;">
+                                <button type="submit" style="background: none; border: none; cursor: pointer; position: absolute; top: 50%; left: 10px; transform: translateY(-50%);">
+                                    <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M15.677 16.385L9.415 10.123C8.915 10.549 8.34 10.8787 7.69 11.112C7.04 11.3453 6.38667 11.462 5.73 11.462C4.12867 11.462 2.77333 10.9077 1.664 9.799C0.554667 8.68967 0 7.33467 0 5.734C0 4.13333 0.554 2.77767 1.662 1.667C2.77067 0.555666 4.12533 0 5.726 0C7.32733 0 8.68333 0.554667 9.794 1.664C10.9047 2.77333 11.46 4.129 11.46 5.731C11.46 6.42567 11.337 7.098 11.091 7.748C10.8443 8.398 10.521 8.954 10.121 9.416L16.383 15.677L15.676 16.385H15.677ZM5.73 10.461C7.05667 10.461 8.177 10.0043 9.091 9.091C10.0043 8.17767 10.461 7.05733 10.461 5.73C10.461 4.40333 10.0043 3.28333 9.091 2.37C8.17767 1.45667 7.05767 1 5.731 1C4.40433 1 3.284 1.45667 2.37 2.37C1.45667 3.28333 1 4.40333 1 5.73C1 7.05667 1.45667 8.17667 2.37 9.09C3.28333 10.0033 4.40333 10.461 5.73 10.461Z" fill="#73759D"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <!--  -->
+                    <!-- Recents Container -->
+                    <div id="contacts-container" style="margin-top: 40px; width: 800px; height: 435px; border: 1px solid #2C2E45; overflow-x: auto; white-space: nowrap; display: flex; border-radius: 5px;">                      
+                        <div id="small-container-inside-contacts-container" style="margin: 0; padding: 0; display: flex; flex-direction: column; align-items: flex-start;">
+                            <div style="color: #FFF; margin-left: 15px; margin-top: 15px;">
+                                <p style="margin: 0; font-size: large;">All Contacts</p>
+                            </div>
+
+                            <!-- Recorded URLs -->
+                            <div id="all-contacts" style="display: flex; flex-direction: column; align-items: flex-start; text-align: left;">
+                                            
+                                <table>
+                                    <tr>
+                                        <th>Ticket No</th>
+                                        <th>Name</th>
+                                        <th>Phone1</th>
+                                        <th>Phone2</th>
+                                    </tr>
+                                    {% for row in results|sort(attribute='Name') %}
+                                    <tr>
+                                        <td>{{ row.Ticket_No }}</td>
+                                        <td>{{ row.Name }}</td>
+                                        <td>{{ row.Phone1 }}</td>
+                                        <td>{{ row.Phone2 }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        </div>
+                    </div>                            
+                    <!--  -->
+
+                    
+
+                </div>
+            </div>
+        </div>
+        <!-- This is the end of Page Number Three -->
         
         <!-- This is common for all -->
         <!-- Dialpad, Recents, Contacts -->
