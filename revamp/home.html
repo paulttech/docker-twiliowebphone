@@ -4,13 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Webphone</title>
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous"> -->
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
+    <!-- css -->
     <link rel="stylesheet" href="/static/css/style.css">
     <!-- moment js library for date & time -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <!-- JQuery -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <!-- Fuse.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.min.js"></script>
+
+
     <style>
         @font-face {
             font-family: 'Clash Display Variable';
@@ -61,6 +66,33 @@
         #recents-container::-webkit-scrollbar {
             display: none;
         }
+
+        #small-container-inside-contacts-container {
+            overflow-y: auto;
+            overflow-x: auto;
+            scrollbar-width: thin; /* For Firefox */
+            scrollbar-color: #888 #f1f1f1; /* For Firefox */
+
+            /* WebKit-based browsers (Chrome, Safari) */
+            &::-webkit-scrollbar {
+                width: 5px;
+                height: 5px;
+            }
+
+            &::-webkit-scrollbar-track {
+                background: #16162f;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background: #888;
+            }
+
+            &::-webkit-scrollbar-thumb:hover {
+                background: #555;
+            }
+        }
+
+
     </style>
 
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.min.js"></script> -->
@@ -232,17 +264,17 @@
         <!-- This is the end of Page Number Two -->
 
         <!-- Page Number Three -->
-        <div id="page-number-three">
+        <div id="page-number-three" class="blinded">
             <div style="display: flex; flex-direction: column;">
                 
                 <div class="modal-content" style="justify-content: center; margin: 0 auto; align-items: center; text-align: center;">
                    
                     <!-- Search Bar for Contacts -->
                     <div style="margin-top: 3.5rem; display: flex; justify-content: center;">
-                        <form>
+                        <form id="contacts-form">
                             <label for="searchInputContacts" style="display: none;">Search:</label>
                             <div style="position: relative;">
-                                <input type="text" id="searchInputContacts" name="searchInputContacts" placeholder="Search by Name/Phone Number" style="font-family: 'Clash Display Variable'; background-color: #0F0F1A; font-size: 1.2rem; color: #4B4E75; font-weight: 300; vertical-align: middle; letter-spacing: 0.5px; border: 0.5px solid #2C2E45; outline: none; height: 50px; width: 600px; text-align: center; border-radius: 4px; padding-left: 30px; color: #FFFFFF;">
+                                <input type="text" id="searchInputContacts" name="searchInputContacts" placeholder="Search by Name/Ticket Number/Phone Number/Email" style="font-family: 'Clash Display Variable'; background-color: #0F0F1A; font-size: 1.2rem; color: #4B4E75; font-weight: 300; vertical-align: middle; letter-spacing: 0.5px; border: 0.5px solid #2C2E45; outline: none; height: 50px; width: 600px; text-align: center; border-radius: 4px; padding-left: 30px; color: #FFFFFF;">
                                 <button type="submit" style="background: none; border: none; cursor: pointer; position: absolute; top: 50%; left: 10px; transform: translateY(-50%);">
                                     <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M15.677 16.385L9.415 10.123C8.915 10.549 8.34 10.8787 7.69 11.112C7.04 11.3453 6.38667 11.462 5.73 11.462C4.12867 11.462 2.77333 10.9077 1.664 9.799C0.554667 8.68967 0 7.33467 0 5.734C0 4.13333 0.554 2.77767 1.662 1.667C2.77067 0.555666 4.12533 0 5.726 0C7.32733 0 8.68333 0.554667 9.794 1.664C10.9047 2.77333 11.46 4.129 11.46 5.731C11.46 6.42567 11.337 7.098 11.091 7.748C10.8443 8.398 10.521 8.954 10.121 9.416L16.383 15.677L15.676 16.385H15.677ZM5.73 10.461C7.05667 10.461 8.177 10.0043 9.091 9.091C10.0043 8.17767 10.461 7.05733 10.461 5.73C10.461 4.40333 10.0043 3.28333 9.091 2.37C8.17767 1.45667 7.05767 1 5.731 1C4.40433 1 3.284 1.45667 2.37 2.37C1.45667 3.28333 1 4.40333 1 5.73C1 7.05667 1.45667 8.17667 2.37 9.09C3.28333 10.0033 4.40333 10.461 5.73 10.461Z" fill="#73759D"/>
@@ -252,32 +284,93 @@
                         </form>
                     </div>
                     <!--  -->
-                    <!-- Recents Container -->
-                    <div id="contacts-container" style="margin-top: 40px; width: 800px; height: 435px; border: 1px solid #2C2E45; overflow-x: auto; white-space: nowrap; display: flex; border-radius: 5px;">                      
-                        <div id="small-container-inside-contacts-container" style="margin: 0; padding: 0; display: flex; flex-direction: column; align-items: flex-start;">
-                            <div style="color: #FFF; margin-left: 15px; margin-top: 15px;">
-                                <p style="margin: 0; font-size: large;">All Contacts</p>
-                            </div>
+                    
+                    
 
-                            <!-- Recorded URLs -->
+                    <!-- Contacts Container -->
+                    <div id="contacts-container" style="margin-top: 40px; width: 950px; height: 435px; border: 1px solid #2C2E45; overflow-x: hidden; white-space: nowrap; display: flex; border-radius: 5px;">                    
+                        <div id="small-container-inside-contacts-container" style="margin: 0; padding: 0; display: flex; flex-direction: column; align-items: flex-start;">
+                            
+
+                            <!-- Searching message to take care of the delay -->
+                            <div id="searching-message" style="color: #b1abab; margin-left: 15px; margin-bottom: 10px;"></div>
+
+                            <!-- All Contacts -->
                             <div id="all-contacts" style="display: flex; flex-direction: column; align-items: flex-start; text-align: left;">
-                                            
-                                <table>
-                                    <tr>
-                                        <th>Ticket No</th>
-                                        <th>Name</th>
-                                        <th>Phone1</th>
-                                        <th>Phone2</th>
+                                                          
+                                <table style="color: #FFFFFF; font-size: medium;">
+                                    <tr style="color: #73759D; margin-left: 10px;">
+                                        <th style="font-size: small; font-weight: 500; border-bottom: 1px solid #73759D; padding: 8px;">Name</th>
+                                        <th style="font-size: small; font-weight: 500; border-bottom: 1px solid #73759D; padding: 8px;">Ticket</th>
+                                        <th style="font-size: small; font-weight: 500; border-bottom: 1px solid #73759D; padding: 8px;">Phone</th>
+                                        <th style="font-size: small; font-weight: 500; border-bottom: 1px solid #73759D; padding: 8px;">Email</th>
                                     </tr>
-                                    {% for row in results|sort(attribute='Name') %}
+                                    {% for row in results|sort(attribute='Name') %}                                      
                                     <tr>
-                                        <td>{{ row.Ticket_No }}</td>
-                                        <td>{{ row.Name }}</td>
-                                        <td>{{ row.Phone1 }}</td>
-                                        <td>{{ row.Phone2 }}</td>
+
+                                        <!-- Name -->
+                                        {% if row.Name|length > 15 %}
+                                            <td style="border-bottom: 1px solid #73759D; padding: 18px; font-size: x-small;">
+                                                {{ row.Name }}
+                                            </td>
+                                        {% else %}
+                                            <td style="border-bottom: 1px solid #73759D; padding: 18px;">
+                                                {{ row.Name }}
+                                            </td>
+                                        {% endif %}
+
+                                        <!-- Ticket Number -->
+                                        <td style="font-size: 15px; border-bottom: 1px solid #73759D; padding: 18px;">
+                                            {{ row.Ticket_No }}
+                                        </td>
+
+                                        <!-- Phone 1 -->
+                                        {% if row.Phone1 is none %}
+                                            <td style="font-size: x-small; border-bottom: 1px solid #73759D; padding: 18px;">
+                                                {{ row.Phone1 }}
+                                                <!-- Uncomment Phone2 only if needed -->
+                                                <!-- <span style="margin-left: 35px;">
+                                                {% if row.Phone2 is not none %}
+                                                    {{ row.Phone2 }}
+                                                {% endif %}
+                                                </span>    -->
+                                            </td>
+                                        {% elif row.Phone1|length > 12  %}
+                                            <td style="font-size: small; border-bottom: 1px solid #73759D; padding: 18px;">
+                                                {{ row.Phone1 }}
+                                                <!-- Uncomment Phone2 only if needed -->
+                                                <!-- <span style="margin-left: 35px;">
+                                                {% if row.Phone2 is not none %}
+                                                    {{ row.Phone2 }}
+                                                {% endif %}
+                                                </span>    -->
+                                            </td>
+                                        {% else %}
+                                            <td style="border-bottom: 1px solid #73759D; padding: 18px;">
+                                                {{ row.Phone1 }}
+                                                <!-- Uncomment Phone2 only if needed -->
+                                                <!-- <span style="margin-left: 35px;">
+                                                {% if row.Phone2 is not none %}
+                                                    {{ row.Phone2 }}
+                                                {% endif %}
+                                                </span>    -->
+                                            </td>
+                                        {% endif %}
+                                                
+                                        <!-- Email -->
+                                        {% if row.Email1|length > 15 %}
+                                            <td style="font-size: small; border-bottom: 1px solid #73759D; padding: 18px;">
+                                                {{ row.Email1 }}
+                                            </td>
+                                        {% else %}
+                                            <td style="border-bottom: 1px solid #73759D; padding: 18px;">
+                                                {{ row.Email1 }}
+                                            </td>                                     
+                                        {% endif %}
                                     </tr>
                                     {% endfor %}
                                 </table>
+                                
                             </div>
                         </div>
                     </div>                            
@@ -295,7 +388,7 @@
         <div style="display: flex; justify-content: center; margin-top: 4.5rem;">
     
             <!-- Dialpad -->
-            <div class="lastRow">
+            <div class="lastRow" id="dialpad-footer">
                 <svg width="18" height="24" viewBox="0 0 18 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
                     <path d="M9 19.6364C7.7625 19.6364 6.75 20.6182 6.75 21.8182C6.75 23.0182 7.7625 24 9 24C10.2375 24 11.25 23.0182 11.25 21.8182C11.25 20.6182 10.2375 19.6364 9 19.6364ZM2.25 0C1.0125 0 0 0.981818 0 2.18182C0 3.38182 1.0125 4.36364 2.25 4.36364C3.4875 4.36364 4.5 3.38182 4.5 2.18182C4.5 0.981818 3.4875 0 2.25 0ZM2.25 6.54545C1.0125 6.54545 0 7.52727 0 8.72727C0 9.92727 1.0125 10.9091 2.25 10.9091C3.4875 10.9091 4.5 9.92727 4.5 8.72727C4.5 7.52727 3.4875 6.54545 2.25 6.54545ZM2.25 13.0909C1.0125 13.0909 0 14.0727 0 15.2727C0 16.4727 1.0125 17.4545 2.25 17.4545C3.4875 17.4545 4.5 16.4727 4.5 15.2727C4.5 14.0727 3.4875 13.0909 2.25 13.0909ZM15.75 4.36364C16.9875 4.36364 18 3.38182 18 2.18182C18 0.981818 16.9875 0 15.75 0C14.5125 0 13.5 0.981818 13.5 2.18182C13.5 3.38182 14.5125 4.36364 15.75 4.36364ZM9 13.0909C7.7625 13.0909 6.75 14.0727 6.75 15.2727C6.75 16.4727 7.7625 17.4545 9 17.4545C10.2375 17.4545 11.25 16.4727 11.25 15.2727C11.25 14.0727 10.2375 13.0909 9 13.0909ZM15.75 13.0909C14.5125 13.0909 13.5 14.0727 13.5 15.2727C13.5 16.4727 14.5125 17.4545 15.75 17.4545C16.9875 17.4545 18 16.4727 18 15.2727C18 14.0727 16.9875 13.0909 15.75 13.0909ZM15.75 6.54545C14.5125 6.54545 13.5 7.52727 13.5 8.72727C13.5 9.92727 14.5125 10.9091 15.75 10.9091C16.9875 10.9091 18 9.92727 18 8.72727C18 7.52727 16.9875 6.54545 15.75 6.54545ZM9 6.54545C7.7625 6.54545 6.75 7.52727 6.75 8.72727C6.75 9.92727 7.7625 10.9091 9 10.9091C10.2375 10.9091 11.25 9.92727 11.25 8.72727C11.25 7.52727 10.2375 6.54545 9 6.54545ZM9 0C7.7625 0 6.75 0.981818 6.75 2.18182C6.75 3.38182 7.7625 4.36364 9 4.36364C10.2375 4.36364 11.25 3.38182 11.25 2.18182C11.25 0.981818 10.2375 0 9 0Z" fill="#00A54F"/>
                 </svg>
@@ -304,7 +397,7 @@
             <!--  -->                
                         
             <!-- Recents -->
-            <div class="lastRow">
+            <div class="lastRow" id="recents-footer">
                 <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
                     <path d="M12.462 20C10.4307 20 8.66033 19.3367 7.151 18.01C5.64167 16.6847 4.768 15.0147 4.53 13H5.541C5.813 14.72 6.59667 16.15 7.892 17.29C9.18867 18.43 10.712 19 12.462 19C14.412 19 16.066 18.3207 17.424 16.962C18.782 15.6033 19.4613 13.9493 19.462 12C19.462 10.05 18.7827 8.39567 17.424 7.037C16.0653 5.67833 14.4113 4.99933 12.462 5C11.4273 5 10.4547 5.21867 9.544 5.656C8.634 6.09333 7.83067 6.69533 7.134 7.462H9.615V8.462H5.462V4.308H6.462V6.696C7.23533 5.84733 8.14133 5.186 9.18 4.712C10.2187 4.23733 11.3127 4 12.462 4C13.5707 4 14.61 4.20867 15.58 4.626C16.55 5.04333 17.3973 5.61433 18.122 6.339C18.8467 7.06367 19.418 7.91133 19.836 8.882C20.2533 9.852 20.462 10.8913 20.462 12C20.462 13.1087 20.2533 14.148 19.836 15.118C19.4187 16.088 18.8473 16.9357 18.122 17.661C17.3973 18.3857 16.55 18.9567 15.58 19.374C14.61 19.7913 13.5707 20 12.462 20ZM15.665 15.854L12.019 12.208V7H13.019V11.792L16.373 15.146L15.665 15.854Z" fill="#585B8B"/>
                 </svg>
@@ -313,7 +406,7 @@
             <!--  -->
                                             
             <!-- Contacts -->
-            <div class="lastRow">
+            <div class="lastRow" id="contacts-footer">
                 <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;"> 
                     <path d="M5 21.385V20.385H20V21.385H5ZM5 3.61499V2.61499H20V3.61499H5ZM12.5 14C13.192 14 13.782 13.7567 14.27 13.27C14.7567 12.782 15 12.192 15 11.5C15 10.808 14.7567 10.218 14.27 9.72999C13.7813 9.24332 13.1913 8.99999 12.5 8.99999C11.8087 8.99999 11.2187 9.24332 10.73 9.72999C10.2433 10.218 10 10.808 10 11.5C10 12.192 10.2433 12.782 10.73 13.27C11.218 13.7567 11.808 14 12.5 14ZM5.115 19C4.655 19 4.271 18.846 3.963 18.538C3.65433 18.2293 3.5 17.845 3.5 17.385V6.61499C3.5 6.15499 3.65433 5.77099 3.963 5.46299C4.271 5.15432 4.655 4.99999 5.115 4.99999H19.885C20.345 4.99999 20.729 5.15432 21.037 5.46299C21.3457 5.77099 21.5 6.15499 21.5 6.61499V17.385C21.5 17.845 21.346 18.229 21.038 18.537C20.7293 18.8457 20.345 19 19.885 19H5.115ZM7.558 18H17.442C16.692 17.3233 15.9053 16.8207 15.082 16.492C14.26 16.164 13.3993 16 12.5 16C11.6013 16 10.7403 16.164 9.917 16.492C9.09433 16.8207 8.30867 17.3233 7.558 18Z" fill="#585B8B"/>
                 </svg>
@@ -368,8 +461,7 @@
         });
     </script>
 
-    <!-- Search logic -->
-    <!-- Add this script tag at the end of your HTML body or in your JavaScript file -->
+    <!-- Search logic for Recents Page -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
         const searchForm = document.querySelector("form");
@@ -395,7 +487,42 @@
         });
         });
     </script>
-  
+
+    <!-- Search logic for Contacts Page -->
+   <script>
+    $(document).ready(function () {
+        // Handle form submission
+        $('#contacts-form').submit(function (e) {
+            e.preventDefault(); // Prevent the default form submission
+
+            // Get the search input value
+            var searchValue = $('#searchInputContacts').val().toLowerCase();
+
+            // If the search input is empty, show all rows and return
+            if (searchValue.trim() === '') {
+                $('#searching-message').text('Search based on Name/Ticket Number/Phone Number/Email');
+                return;
+            }
+
+            // Iterate through each contact row and hide/show based on the search input
+            $('#all-contacts tr:gt(0)').each(function () {
+                var name = $(this).find('td:first').text().toLowerCase();
+                var ticket = $(this).find('td:eq(1)').text().toLowerCase();
+                var phone1 = $(this).find('td:eq(2)').text().toLowerCase();
+                var phone2 = $(this).find('td:eq(3)').text().toLowerCase();
+                var email = $(this).find('td:eq(3)').text().toLowerCase();
+
+
+                    // Show the row if it contains the search input
+                    if (name.includes(searchValue) || ticket.includes(searchValue) || phone1.includes(searchValue) || (phone2 && phone2.includes(searchValue)) || email.includes(searchValue) ) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
+        });
+    </script>
 
 
     <!-- Small container with date -->
